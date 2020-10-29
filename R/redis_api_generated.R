@@ -923,9 +923,22 @@ redis_commands <- function(command) {
       assert_scalar_or_null2(MATCH)
       assert_scalar_or_null2(COUNT)
       command(list("ZSCAN", key, cursor, cmd_command("MATCH", MATCH, FALSE), cmd_command("COUNT", COUNT, FALSE)))
-    })
+    },
+    
+    ZPOPMIN = function(key) {
+      assert_scalar2(key)
+      command(list("ZPOPMIN", key))
+    },
+    ZPOPMAX = function(key) {
+      assert_scalar2(key)
+      command(list("ZPOPMAX", key))
+    }
+    
+    )
 }
 cmd_since <- numeric_version(c(
+  ZPOPMIN = "5.0.0",
+  ZPOPMAX = "5.0.0",
   APPEND = "2.0.0",
   AUTH = "1.0.0",
   BGREWRITEAOF = "1.0.0",
