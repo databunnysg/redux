@@ -932,11 +932,46 @@ redis_commands <- function(command) {
     ZPOPMAX = function(key) {
       assert_scalar2(key)
       command(list("ZPOPMAX", key))
+    },
+    
+    XADD = function(streamname,streamid,field,value) {
+      assert_scalar2(streamname)
+      assert_scalar2(streamid)
+      assert_scalar2(field)
+      assert_scalar2(value)
+      command(list("XADD", streamname,streamid,field,value))
+    },
+    XLEN = function(streamname) {
+      assert_scalar2(streamname)
+      command(list("XLEN", streamname))
+    },
+    XRANGE  = function(streamname,lowid="-",highid="+",count=1) {
+      assert_scalar2(streamname)
+      assert_scalar2(lowid)
+      assert_scalar2(highid)
+      command(list("XRANGE", streamname,lowid,highid,"COUNT",count))
+    },
+    XREVRANGE = function(streamname,highid="+",lowid="-",count=1) {
+      assert_scalar2(streamname)
+      assert_scalar2(lowid)
+      assert_scalar2(highid)
+      command(list("XREVRANGE", streamname,highid,lowid,"COUNT",count))
+    },
+    XREAD = function(count=1,streamname,id) {
+      assert_scalar2(streamname)
+      assert_scalar2(count)
+      assert_scalar2(id)
+      command(list("XREAD", "COUNT",count,"STREAMS",streamname,id))
     }
     
     )
 }
 cmd_since <- numeric_version(c(
+  XADD = "5.0.0",
+  XLEN = "5.0.0",
+  XRANGE = "5.0.0",
+  XREVRANGE = "5.0.0",
+  XREAD = "5.0.0",
   ZPOPMIN = "5.0.0",
   ZPOPMAX = "5.0.0",
   APPEND = "2.0.0",
